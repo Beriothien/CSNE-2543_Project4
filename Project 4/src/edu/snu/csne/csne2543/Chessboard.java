@@ -29,65 +29,37 @@
      private int[][] _spacesVisited = new int[1][2];
      // Create an Object Knight
      private Knight objKnight;
+     private int _boardIteration = 0;
+     private int[] _numMovesArray = new int[1];
 
 
      // Create Chessboard Constructor
-     public void startBoard(String knightSymbol, int knightXPosition, int knightYPosition) {
-         // Construct Knight Object
+     public void startBoard(String knightSymbol, int knightXPosition, int knightYPosition, int iteration) {
          objKnight = new Knight(knightSymbol, knightXPosition, knightYPosition);
-         //Make Sure _spacesVisited is empty
          emptySpacesVisited();
-         // Set First Space visited to Current Position of Knight
          _spacesVisited[0][0] = objKnight.getCurrentX();
          _spacesVisited[0][1] = objKnight.getCurrentY();
+         _boardIteration = iteration;
 
-         // Create The Board
-         initializeBoard(_board);
+         newBoard(_board);
      }
 
 
      // Create the First Board Output
-     public void initializeBoard(String[][] board) {
-
-         // Fill the Indexes of _board with "."
-         for (String[] strings : board) {
-             Arrays.fill(strings, ".");
-         }
-
-         // Put Knight in position on the Board
-         board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
-
-         // Labeling for brackets that show current iteration and move
-         System.out.println("[0,0]");
-
-         // Print Out Current Board Layout
-         printBoard(board);
-
-         // St
-         mainLoop();
-     }
-
      public void newBoard(String[][] board) {
 
-         // Create an Array holding all The Possible Positions on the board
-
-         // Fill the Spaces with "_"
+         // Fill the Spaces with "."
          for (String[] strings : board) {
              Arrays.fill(strings, ".");
          }
 
          // Put Knight in position ( 3 , 4 ) on the Board
          board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
-         // Labeling for brackets that show current iteration and move
 
-         // Numbers for the position on the top of the Board
-         System.out.println("[0,0]");
-
-         printBoard(board);
-
-         // Start Main Loop
+         //Start MainLoop
          mainLoop();
      }
+
 
      public void mainLoop() {
 
@@ -106,6 +78,17 @@
              // Due to lack of null from not using ArrayList, if the Array length is 1, and the value is 10 it signals no valid moves
              // Check for Break, Break if Values are 10,
              if ((movesToChoseFrom.length == 1) && (movesToChoseFrom[0][0] == 10)) {
+                 System.out.println("");
+                 System.out.println("Board Iteration: " + _boardIteration);
+                 System.out.println("Number of Moves: " + numberOfMoves);
+                 if (_numMovesArray[0] == 0) {
+                     _numMovesArray[0] = numberOfMoves;
+                 } else {
+                     _numMovesArray = addElement(_numMovesArray, numberOfMoves);
+                 }
+                 if (numberOfMoves == 63) {
+                     System.out.println("Full Tour");
+                 }
                  break;
              }
 
@@ -127,10 +110,15 @@
              numberOfMoves += 1;
 
              // Print out Updated Board
-             printBoard(_board, numberOfMoves);
+             printBoard(_board, numberOfMoves, _boardIteration);
 
              // Repeat
          }
+     }
+
+     // Get _numMovesArray
+     public int[] getNumMovesArray() {
+         return _numMovesArray;
      }
 
      //  Set Coordinates in _spacesVisited
@@ -175,7 +163,6 @@
 
                      newArray = removeElement(newArray, i);
 
-
                      //System.out.println("newArray " + Arrays.deepToString(newArray));
                      break;
                  }
@@ -183,7 +170,6 @@
          }
 
          // Check if the space has already been visited, if so remove it from possible moves
-
          // Check the list for as many times as there are values in the list
          for (int j = 0; j < 8; j++) {
              // Iterate Through and remove when the values equal; Break and start from beginning
@@ -276,40 +262,10 @@
          return newArray;
      }
 
-     public void printBoard(String[][] board) {
+     public void printBoard(String[][] board, int numMoves, int _boardIteration) {
 
          System.out.println("");
-
-         // Top of the Board Border
-         System.out.println("    ===========================");
-
-         // Print out the 2d Array of the Board
-         for (int i = 0; i < board.length; i++) {
-             // Numbers for the position on the side of the Board
-             System.out.print(" " + i + "  | ");
-
-             for (int j = 0; j < board[i].length; j++) {
-                 // Print the Value in the Array and add 2 WhiteSpaces
-                 System.out.print(board[i][j] + "  ");
-             }
-             // Right Border of the Board
-             System.out.print("|");
-             // Create a NewLine
-             System.out.println();
-             // If the loop is at the last iteration, add Bottom Border of Board
-             if (i == board.length - 1) {
-                 System.out.println("    ===========================");
-                 // Numbers for the position on the bottom of the Board
-                 System.out.println("      0  1  2  3  4  5  6  7  ");
-             }
-
-         }
-     }
-
-     public void printBoard(String[][] board, int numMoves) {
-
-         System.out.println("");
-         System.out.println("[0," + numMoves + "]");
+         System.out.println("[" + _boardIteration + "," + numMoves + "]");
 
          // Top of the Board Border
          System.out.println("    ===========================");

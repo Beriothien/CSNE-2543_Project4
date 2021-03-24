@@ -9,13 +9,14 @@ package edu.snu.csne.csne2543;
 
 // Import Statements
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Initialization {
+
     private final Scanner stdin = new Scanner(System.in);
     private final Chessboard board = new Chessboard();
-    private final HeadlessBoard whileBoard = new HeadlessBoard();
     private int _startingX;
     private int _startingY;
     private boolean _promptUser = true;
@@ -40,8 +41,9 @@ public class Initialization {
                 case "1":
                     // Prompt User For Manual Or Random Starting Location
                     essentials();
+
                     // Create a New Board and Knight Objects
-                    board.startBoard("K", _startingX, _startingY);
+                    board.startBoard("K", _startingX, _startingY, 1);
 
                     // End Prompting Loop
                     _promptUser = false;
@@ -54,11 +56,10 @@ public class Initialization {
                     // Prompt User For Starting Location, Output
                     essentials();
                     // Create a New Board and Knight
-                    int i = 1;
-                    while (i <= 1000) {
-                        whileBoard.board("K", _startingX, _startingY, i);
-                        i++;
+                    for (int i = 1; i < 1000; i++) {
+                        board.startBoard("K", _startingX, _startingY, i);
                     }
+                    System.out.println(Arrays.toString(board.getNumMovesArray()));
 
                     // End Prompting Loop
                     _promptUser = false;
@@ -66,7 +67,18 @@ public class Initialization {
 
                     break;
                 case "4":
-                    System.out.println("Not Programmed Yet");
+                    // Prompt User For Starting Location, Output
+                    essentials();
+                    // Create a New Board and Knight
+                    int i = 1;
+                    while (i <= 1000) {
+                        board.startBoard("K", _startingX, _startingY, i);
+                        i++;
+                    }
+                    System.out.println(Arrays.toString(board.getNumMovesArray()));
+
+                    // End Prompting Loop
+                    _promptUser = false;
                     break;
                 default:
                     System.out.println("Invalid Input");
