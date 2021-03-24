@@ -88,10 +88,11 @@
                      _numMovesArray = addElement(_numMovesArray, numberOfMoves);
                  }
                  if (numberOfMoves >= 63) {
-                     System.out.println("Full Tour");
                      _stop = true;
-
+                     break;
                  }
+
+
                  break;
              }
 

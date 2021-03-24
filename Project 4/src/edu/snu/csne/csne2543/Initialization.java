@@ -72,6 +72,11 @@ public class Initialization {
                     // Create a New Board and Knight
                     int i = 1;
                     while (true) {
+                        Random rand = new Random();
+                        _startingX = rand.nextInt(7);
+                        _startingY = rand.nextInt(7);
+                        System.out.println("X Generated = " + _startingX);
+                        System.out.println("Y Generated = " + _startingY);
                         board.startBoard("K", _startingX, _startingY, i);
                         if (board.stop()) {
                             break;
