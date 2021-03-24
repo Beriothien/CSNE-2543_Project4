@@ -31,6 +31,7 @@
      private Knight objKnight;
      private int _boardIteration = 0;
      private int[] _numMovesArray = new int[1];
+     private boolean _stop = false;
 
 
      // Create Chessboard Constructor
@@ -86,8 +87,10 @@
                  } else {
                      _numMovesArray = addElement(_numMovesArray, numberOfMoves);
                  }
-                 if (numberOfMoves == 63) {
+                 if (numberOfMoves >= 63) {
                      System.out.println("Full Tour");
+                     _stop = true;
+
                  }
                  break;
              }
@@ -132,6 +135,10 @@
          _spacesVisited[0][0] = objKnight.getCurrentX();
          _spacesVisited[0][1] = objKnight.getCurrentY();
 
+     }
+
+     public boolean stop() {
+         return _stop;
      }
 
      // Randomly select

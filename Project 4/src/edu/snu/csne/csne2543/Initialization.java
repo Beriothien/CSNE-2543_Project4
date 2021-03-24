@@ -71,8 +71,11 @@ public class Initialization {
                     essentials();
                     // Create a New Board and Knight
                     int i = 1;
-                    while (i <= 1000) {
+                    while (true) {
                         board.startBoard("K", _startingX, _startingY, i);
+                        if (board.stop()) {
+                            break;
+                        }
                         i++;
                     }
                     System.out.println(Arrays.toString(board.getNumMovesArray()));
