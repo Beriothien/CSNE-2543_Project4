@@ -8,7 +8,6 @@
 package edu.snu.csne.csne2543;
 
 // Import Methods
-
 import java.util.Arrays;
 import java.util.Random;
 
