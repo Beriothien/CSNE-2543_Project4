@@ -21,7 +21,7 @@
   *
   * @author William Hibbert
   */
- public class Chessboard {
+ public class MinOut {
 
      // Create An Array That Holds the Values of The Board
      private final String[][] _board = new String[8][8];
@@ -93,7 +93,7 @@
                      _stop = true;
                      break;
                  }
-
+                 printOut(numberOfMoves);
 
                  break;
              }
@@ -116,7 +116,7 @@
 
 
              // Print out Updated Board
-             printBoard(_board, numberOfMoves, _boardIteration);
+
 
              // Repeat
          }
@@ -272,34 +272,10 @@
          return newArray;
      }
 
-     public void printBoard(String[][] board, int numMoves, int _boardIteration) {
+     public void printOut( int numMoves) {
 
          System.out.println("");
          System.out.println("[" + _boardIteration + "," + numMoves + "]");
 
-         // Top of the Board Border
-         System.out.println("    ===========================");
-
-         // Print out the 2d Array of the Board
-         for (int i = 0; i < board.length; i++) {
-             // Numbers for the position on the side of the Board
-             System.out.print(" " + i + "  | ");
-
-             for (int j = 0; j < board[i].length; j++) {
-                 // Print the Value in the Array and add 2 WhiteSpaces
-                 System.out.print(board[i][j] + "  ");
-             }
-             // Right Border of the Board
-             System.out.print("|");
-             // Create a NewLine
-             System.out.println();
-             // If the loop is at the last iteration, add Bottom Border of Board
-             if (i == board.length - 1) {
-                 System.out.println("    ===========================");
-                 // Numbers for the position on the bottom of the Board
-                 System.out.println("      0  1  2  3  4  5  6  7  ");
-             }
-
-         }
      }
  }

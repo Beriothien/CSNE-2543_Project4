@@ -17,6 +17,7 @@ public class Initialization {
 
     private final Scanner stdin = new Scanner(System.in);
     private final Chessboard board = new Chessboard();
+    private final MinOut minBoard = new MinOut();
     private int _startingX;
     private int _startingY;
     private boolean _promptUser = true;
@@ -43,7 +44,7 @@ public class Initialization {
                     essentials();
 
                     // Create a New Board and Knight Objects
-                    board.startBoard("K", _startingX, _startingY, 1);
+                    minBoard.startBoard("K", _startingX, _startingY, 1);
 
                     // End Prompting Loop
                     _promptUser = false;
@@ -57,7 +58,7 @@ public class Initialization {
                     essentials();
                     // Create a New Board and Knight
                     for (int i = 1; i < 1000; i++) {
-                        board.startBoard("K", _startingX, _startingY, i);
+                        minBoard.startBoard("K", _startingX, _startingY, i);
                     }
                     System.out.println(Arrays.toString(board.getNumMovesArray()));
 
@@ -72,13 +73,8 @@ public class Initialization {
                     // Create a New Board and Knight
                     int i = 1;
                     while (true) {
-                        Random rand = new Random();
-                        _startingX = rand.nextInt(7);
-                        _startingY = rand.nextInt(7);
-                        System.out.println("X Generated = " + _startingX);
-                        System.out.println("Y Generated = " + _startingY);
-                        board.startBoard("K", _startingX, _startingY, i);
-                        if (board.stop()) {
+                        minBoard.startBoard("K", _startingX, _startingY, i);
+                        if (minBoard.stop()) {
                             break;
                         }
                         i++;
