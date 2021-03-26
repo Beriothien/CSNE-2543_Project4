@@ -33,6 +33,11 @@
      private int[] _numMovesArray = new int[1];
      private boolean _stop = false;
 
+     public Chessboard()
+     {
+         // Create an Empty Constructor
+     }
+
 
      // Create Chessboard Constructor
      public void startBoard(String knightSymbol, int knightXPosition, int knightYPosition, int iteration) {
@@ -58,13 +63,6 @@
          board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
 
          //Start MainLoop
-         mainLoop();
-     }
-
-
-     public void mainLoop() {
-
-         // Create Variable To Track Number of Moves
          int numberOfMoves = 0;
 
          // Loop until Break
@@ -121,6 +119,7 @@
              // Repeat
          }
      }
+
 
      // Get _numMovesArray
      public int[] getNumMovesArray() {

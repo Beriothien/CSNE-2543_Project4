@@ -16,8 +16,7 @@
   * Chessboard
   * <p>
   * This Class Creates a Knight Object, determines if its moves are valid, and stay on the bored, and keeps
-  * track of previous positions of the Knight. This Class also Outputs ASCII visuals to show where the
-  * Knights current position is and where it has previously been.
+  * track of previous positions of the Knight. Writes to Output Current Board Iteration and NumberOfMoves.
   *
   * @author William Hibbert
   */
@@ -32,6 +31,11 @@
      private int _boardIteration = 0;
      private int[] _numMovesArray = new int[1];
      private boolean _stop = false;
+
+     public MinOut()
+     {
+         // Create an Empty Constructor
+     }
 
 
      // Create Chessboard Constructor
@@ -49,21 +53,10 @@
      // Create the First Board Output
      public void newBoard(String[][] board) {
 
-         // Fill the Spaces with "."
-         for (String[] strings : board) {
-             Arrays.fill(strings, ".");
-         }
-
          // Put Knight in position ( 3 , 4 ) on the Board
          board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
 
          //Start MainLoop
-         mainLoop();
-     }
-
-
-     public void mainLoop() {
-
          // Create Variable To Track Number of Moves
          int numberOfMoves = 0;
 
@@ -81,9 +74,10 @@
              // Check for Break, Break if Values are 10,
              if ((movesToChoseFrom.length == 1) && (movesToChoseFrom[0][0] == 10))
              {
-                 System.out.println("");
+                 System.out.println("NEW BOARD #"+_boardIteration);
                  System.out.println("Board Iteration: " + _boardIteration);
                  System.out.println("Number of Moves: " + numberOfMoves);
+                 System.out.println("");
                  if (_numMovesArray[0] == 0) {
                      _numMovesArray[0] = numberOfMoves;
                  } else {
@@ -93,7 +87,6 @@
                      _stop = true;
                      break;
                  }
-                 printOut(numberOfMoves);
 
                  break;
              }
@@ -121,6 +114,7 @@
              // Repeat
          }
      }
+
 
      // Get _numMovesArray
      public int[] getNumMovesArray() {
@@ -272,10 +266,4 @@
          return newArray;
      }
 
-     public void printOut( int numMoves) {
-
-         System.out.println("");
-         System.out.println("[" + _boardIteration + "," + numMoves + "]");
-
-     }
  }

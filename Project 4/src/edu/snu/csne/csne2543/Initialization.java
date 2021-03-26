@@ -42,31 +42,31 @@ public class Initialization {
                 case "1":
                     // Prompt User For Manual Or Random Starting Location
                     essentials();
-
                     // Create a New Board and Knight Objects
-                    minBoard.startBoard("K", _startingX, _startingY, 1);
-
-                    // End Prompting Loop
-                    _promptUser = false;
-
+                    board.startBoard("K", _startingX, _startingY, 1);
+                    // Leave Switch Statement
                     break;
+
                 case "2":
-                    System.out.println("Not Programmed Yet");
+                    // Prompt User For Manual Or Random Starting Location
+                    essentials();
+                    // Create a New Board and Knight Objects
+
+                    // Leave Switch Statement
                     break;
                 case "3":
                     // Prompt User For Starting Location, Output
                     essentials();
                     // Create a New Board and Knight
-                    for (int i = 1; i < 1000; i++) {
+                    for (int i = 1; i <= 1000; i++)
+                    {
                         minBoard.startBoard("K", _startingX, _startingY, i);
                     }
-                    System.out.println(Arrays.toString(board.getNumMovesArray()));
-
-                    // End Prompting Loop
-                    _promptUser = false;
-
-
+                    System.out.println("Number of Moves Per Iteration");
+                    System.out.println(Arrays.toString(minBoard.getNumMovesArray()));
+                    // Leave Switch Statement
                     break;
+
                 case "4":
                     // Prompt User For Starting Location, Output
                     essentials();
@@ -80,10 +80,8 @@ public class Initialization {
                         i++;
                     }
                     System.out.println(Arrays.toString(board.getNumMovesArray()));
-
-                    // End Prompting Loop
-                    _promptUser = false;
                     break;
+
                 default:
                     System.out.println("Invalid Input");
                     System.out.println("Type '1','2','3', or '4'");
@@ -94,17 +92,24 @@ public class Initialization {
 
 
     public void startingLocation() {
+
         System.out.println("Choose A Starting Position:");
         System.out.println("    1. Manual Input For Location");
         System.out.println("    2. Random Starting Location");
         System.out.println("Type '1', or '2' to make a selection");
+
         String selection = stdin.nextLine();
-        if (selection.equals("1")) {
+
+        if (selection.equals("1"))
+        {
             System.out.println("X Location:");
             _startingX = stdin.nextByte();
+
             System.out.println("Y Location:");
             _startingY = stdin.nextByte();
-        } else if (selection.equals("2")) {
+
+        } else if (selection.equals("2"))
+        {
             Random rand = new Random();
             _startingX = rand.nextInt(7);
             _startingY = rand.nextInt(7);
