@@ -16,8 +16,9 @@ import java.util.Scanner;
 public class Initialization {
 
     private final Scanner stdin = new Scanner(System.in);
-    private final Chessboard board = new Chessboard();
-    private final MinOut minBoard = new MinOut();
+    private final Chessboard chessboard = new Chessboard();
+    private final MinOut minOut = new MinOut();
+    private final Heuristic heuristic= new Heuristic();
     private int _startingX;
     private int _startingY;
     private boolean _promptUser = true;
@@ -43,7 +44,7 @@ public class Initialization {
                     // Prompt User For Manual Or Random Starting Location
                     essentials();
                     // Create a New Board and Knight Objects
-                    board.startBoard("K", _startingX, _startingY, 1);
+                    chessboard.startBoard("K", _startingX, _startingY, 1);
                     // Leave Switch Statement
                     break;
 
@@ -51,6 +52,7 @@ public class Initialization {
                     // Prompt User For Manual Or Random Starting Location
                     essentials();
                     // Create a New Board and Knight Objects
+                    heuristic.startBoard("K",_startingX,_startingY,1);
 
                     // Leave Switch Statement
                     break;
@@ -60,10 +62,10 @@ public class Initialization {
                     // Create a New Board and Knight
                     for (int i = 1; i <= 1000; i++)
                     {
-                        minBoard.startBoard("K", _startingX, _startingY, i);
+                        minOut.startBoard("K", _startingX, _startingY, i);
                     }
                     System.out.println("Number of Moves Per Iteration");
-                    System.out.println(Arrays.toString(minBoard.getNumMovesArray()));
+                    System.out.println(Arrays.toString(minOut.getNumMovesArray()));
                     // Leave Switch Statement
                     break;
 
@@ -73,13 +75,13 @@ public class Initialization {
                     // Create a New Board and Knight
                     int i = 1;
                     while (true) {
-                        minBoard.startBoard("K", _startingX, _startingY, i);
-                        if (minBoard.stop()) {
+                        minOut.startBoard("K", _startingX, _startingY, i);
+                        if (minOut.stop()) {
                             break;
                         }
                         i++;
                     }
-                    System.out.println(Arrays.toString(board.getNumMovesArray()));
+                    System.out.println(Arrays.toString(chessboard.getNumMovesArray()));
                     break;
 
                 default:
