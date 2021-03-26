@@ -29,8 +29,11 @@
      private int[][] _spacesVisited = new int[1][2];
      // Create an Object Knight
      private Knight objKnight;
+     // Holds Current boardIteration
      private int _boardIteration = 0;
+     // Array that holds all numberOfMoves from Iterations
      private int[] _numMovesArray = new int[1];
+     // Boolean to indicate stopping in brute force attempt
      private boolean _stop = false;
 
      public Chessboard()
@@ -39,39 +42,37 @@
      }
 
 
-     // Create Chessboard Constructor
-     public void startBoard(String knightSymbol, int knightXPosition, int knightYPosition, int iteration) {
+     // Create A Method to Create and Start Simulation
+     public void startBoard(String knightSymbol, int knightXPosition, int knightYPosition, int currentIteration) {
+         // Create Knight Piece Object
          objKnight = new Knight(knightSymbol, knightXPosition, knightYPosition);
+         // Empty the Array _spacesVisited, used when iterating through multiple times
          emptySpacesVisited();
+         // Set current Knight position as a Space Visited
          _spacesVisited[0][0] = objKnight.getCurrentX();
          _spacesVisited[0][1] = objKnight.getCurrentY();
-         _boardIteration = iteration;
-
-         newBoard(_board);
-     }
-
-
-     // Create the First Board Output
-     public void newBoard(String[][] board) {
+         // Initialize the variable to currentIteration
+         _boardIteration = currentIteration;
 
          // Fill the Spaces with "."
-         for (String[] strings : board) {
+         for (String[] strings : _board) {
              Arrays.fill(strings, ".");
          }
 
-         // Put Knight in position ( 3 , 4 ) on the Board
-         board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
+         // Put Knight in given position on the Board
+         _board[objKnight.getCurrentY()][objKnight.getCurrentX()] = objKnight.getKnightSymbol();
 
          //Start MainLoop
-         int numberOfMoves = 0;
+         int numberOfMoves = 1;
 
          // Loop until Break
          while (true) {
-             numberOfMoves += 1;
 
+             numberOfMoves += 1;
 
              // Get Moves Available to the Knight , Store in a 2D Array with coordinates (x , y)
              int[][] movesToChoseFrom = objKnight.knightMoves(objKnight.getCurrentX(), objKnight.getCurrentY());
+
              // Make sure moves are Valid, then Return A List with All Valid Positions
              movesToChoseFrom = movesAreValid(movesToChoseFrom);
 
@@ -82,12 +83,19 @@
                  System.out.println("");
                  System.out.println("Board Iteration: " + _boardIteration);
                  System.out.println("Number of Moves: " + numberOfMoves);
-                 if (_numMovesArray[0] == 0) {
+
+                 // Creates beginning of _numMovesArray, adds a value to previously undefined value
+                 if (_numMovesArray[0] == 0)
+                 {
                      _numMovesArray[0] = numberOfMoves;
-                 } else {
+                 }
+                 // Adds current Number of Moves to Array _numMovesArray
+                 else
+                 {
                      _numMovesArray = addElement(_numMovesArray, numberOfMoves);
                  }
-                 if (numberOfMoves >= 63) {
+                 // If all moves can be made, Stop
+                 if (numberOfMoves == 64) {
                      _stop = true;
                      break;
                  }
@@ -121,6 +129,8 @@
      }
 
 
+
+
      // Get _numMovesArray
      public int[] getNumMovesArray() {
          return _numMovesArray;
@@ -132,6 +142,7 @@
          _spacesVisited = addElement(_spacesVisited, x, y);
      }
 
+     // Empties the _spacesVisited Array
      public void emptySpacesVisited() {
          _spacesVisited = new int[1][2];
          _spacesVisited[0][0] = objKnight.getCurrentX();
@@ -139,6 +150,7 @@
 
      }
 
+     // Returns the _stop Boolean to Initialization Class
      public boolean stop() {
          return _stop;
      }
@@ -157,27 +169,21 @@
          return choice;
      }
 
+     // Checks if Moves in the Given Array are Valid moves
      public int[][] movesAreValid(int[][] moves) {
          // Create a value to return
          int[][] newArray = moves;
          // Iterate through list of possible moves
          for (int k = 0; k < 7; k++) {
              for (int i = 0; i < newArray.length; i++) {
-
                  // if the move doesn't fall into the range of the board, remove it from the list
                  if ((newArray[i][0] < 0) | (newArray[i][0] > 7) | (newArray[i][1] < 0) | (newArray[i][1] > 7)) {
-
-                     //System.out.println("newArray " + Arrays.deepToString(newArray));
-                     //System.out.println("newArray Index " + newArray[i][0] + " " + newArray[i][1]);
-
                      newArray = removeElement(newArray, i);
 
-                     //System.out.println("newArray " + Arrays.deepToString(newArray));
                      break;
                  }
              }
          }
-
          // Check if the space has already been visited, if so remove it from possible moves
          // Check the list for as many times as there are values in the list
          for (int j = 0; j < 8; j++) {
@@ -185,10 +191,7 @@
              for (int i = 0; i < newArray.length; i++) {
                  for (int[] ints : _spacesVisited) {
                      if ((newArray[i][0] == ints[0]) && (newArray[i][1] == ints[1])) {
-                         //System.out.println("visited "+newArray[i][0] + " " + newArray[i][1]);
-
                          newArray = removeElement(newArray, i);
-                         //System.out.println("visited compare" + Arrays.deepToString(newArray));
                          break;
                      }
                  }
@@ -197,6 +200,7 @@
          return newArray;
      }
 
+     // Removes Elements from a Two Dimensional Array
      public int[][] removeElement(int[][] originalArray, int indexRemoved) {
          // Create a new array 1 less than the length of the original Array
          int[][] newArray;
@@ -223,7 +227,7 @@
          return newArray;
      }
 
-
+    // Adds an Element to a Two Dimensional Array
      public int[][] addElement(int[][] originalArray, int value1, int value2) {
          // Create a new array 1 less than the length of the original Array
          int[][] newArray = new int[originalArray.length + 1][2];
@@ -241,6 +245,7 @@
          return newArray;
      }
 
+     // Adds an Element to a One Dimensional Array
      public int[] addElement(int[] originalArray, int value1) {
          // Create a new array 1 less than the length of the original Array
          int[] newArray = new int[originalArray.length + 1];
@@ -253,6 +258,7 @@
          return newArray;
      }
 
+     // Strips an Array to One Given Index
      public int[][] stripElement(int[][] originalArray, int indexKept) {
          // Create a new array 1 Long and 2 deep
          int[][] newArray = new int[1][2];
@@ -271,6 +277,7 @@
          return newArray;
      }
 
+     // Prints an Updated Version of _board
      public void printBoard(String[][] board, int numMoves, int _boardIteration) {
 
          System.out.println("");

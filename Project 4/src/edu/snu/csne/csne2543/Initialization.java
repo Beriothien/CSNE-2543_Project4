@@ -53,19 +53,20 @@ public class Initialization {
                     essentials();
                     // Create a New Board and Knight Objects
                     heuristic.startBoard("K",_startingX,_startingY,1);
-
                     // Leave Switch Statement
                     break;
+
                 case "3":
                     // Prompt User For Starting Location, Output
                     essentials();
-                    // Create a New Board and Knight
+                    // Create a New Board and Knight, Do It for a Thousand Iterations
+                    // Return Data for Number of moves per Iteration
                     for (int i = 1; i <= 1000; i++)
                     {
                         minOut.startBoard("K", _startingX, _startingY, i);
                     }
                     System.out.println("Number of Moves Per Iteration");
-                    System.out.println(Arrays.toString(minOut.getNumMovesArray()));
+                    printArray(minOut.getNumMovesArray());
                     // Leave Switch Statement
                     break;
 
@@ -73,15 +74,15 @@ public class Initialization {
                     // Prompt User For Starting Location, Output
                     essentials();
                     // Create a New Board and Knight
+                    // Iterate through Boards Until One Completes the Full tour
                     int i = 1;
                     while (true) {
-                        minOut.startBoard("K", _startingX, _startingY, i);
-                        if (minOut.stop()) {
+                        chessboard.startBoard("K", _startingX, _startingY, i);
+                        if (chessboard.stop()) {
                             break;
                         }
                         i++;
                     }
-                    System.out.println(Arrays.toString(chessboard.getNumMovesArray()));
                     break;
 
                 default:
@@ -132,15 +133,11 @@ public class Initialization {
         _promptUser = false;
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    public void printArray(int[] array)
+    {
+        for(int i = 0; i<array.length; i++)
+        {
+            System.out.println("Board Iteration #" + i + " = " + array[i]);
+        }
+    }
 }

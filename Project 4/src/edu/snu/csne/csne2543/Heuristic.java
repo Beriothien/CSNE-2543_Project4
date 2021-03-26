@@ -9,9 +9,7 @@ package edu.snu.csne.csne2543;
 
 // Import Statements
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Heuristic
