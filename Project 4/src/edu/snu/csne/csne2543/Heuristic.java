@@ -9,6 +9,7 @@ package edu.snu.csne.csne2543;
 
 // Import Statements
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -27,9 +28,10 @@ public class Heuristic {
     private final String[][] _board = new String[8][8];
     // Create An Array That Holds Coordinates Visited
     private int[][] _spacesVisited = new int[1][2];
+    private int[][] _spacesVisitedLookAhead = _spacesVisited;
     // Create an Object Knight
     private Knight objKnight;
-    private int[][] heuristic =
+    private final int[][] heuristic =
                 {{2, 3, 4, 4, 4, 4, 3, 2},
                 {3, 4, 6, 6, 6, 6, 4, 3},
                 {4, 6, 8, 8, 8, 8, 6, 4},
@@ -38,7 +40,6 @@ public class Heuristic {
                 {4, 6, 8, 8, 8, 8, 6, 4},
                 {3, 4, 6, 6, 6, 6, 4, 3},
                 {2, 3, 4, 4, 4, 4, 3, 2}};
-    private int[][] _movesToChoseFrom;
 
     public Heuristic() {
         // Create an Empty Constructor
@@ -70,13 +71,13 @@ public class Heuristic {
 
 
             // Get Moves Available to the Knight , Store in a 2D Array with coordinates (x , y)
-            _movesToChoseFrom = objKnight.knightMoves(objKnight.getCurrentX(), objKnight.getCurrentY());
+            int[][] movesToChoseFrom = objKnight.knightMoves(objKnight.getCurrentX(), objKnight.getCurrentY());
             // Make sure moves are Valid, then Return A List with All Valid Positions
-            _movesToChoseFrom = movesAreValid(_movesToChoseFrom);
+            movesToChoseFrom = movesAreValid(movesToChoseFrom);
 
             // Due to lack of null from not using ArrayList, if the Array length is 1, and the value is 10 it signals no valid moves
             // Check for Break, Break if Values are 10,
-            if ((_movesToChoseFrom.length == 1) && (_movesToChoseFrom[0][0] == 10)) {
+            if ((movesToChoseFrom.length == 1) && (movesToChoseFrom[0][0] == 10)) {
                 System.out.println(" ");
                 System.out.println("Board Iteration: " + iteration);
                 System.out.println("Number of Moves: " + numberOfMoves);
@@ -90,8 +91,8 @@ public class Heuristic {
             // Add Old Position to _spaceVisited
             setSpacesVisited(objKnight.getCurrentX(), objKnight.getCurrentY());
 
-            // Select A Move Randomly from Array of Valid moves and Update Current Position
-            int[][] choice = selectMove(_movesToChoseFrom);
+            // Select A Move from Array of Valid moves and Update Current Position
+            int[][] choice = selectMove(movesToChoseFrom);
             objKnight.setCurrentX(choice[0][0]);
             objKnight.setCurrentY(choice[0][1]);
 
@@ -115,6 +116,10 @@ public class Heuristic {
         // Append a new value to the Array
         _spacesVisited = addElement(_spacesVisited, x, y);
     }
+    public void setSpacesVisitedLookAhead(int x, int y) {
+        // Append a new value to the Array
+        _spacesVisitedLookAhead = addElement(_spacesVisitedLookAhead, x, y);
+    }
 
     public void emptySpacesVisited() {
         _spacesVisited = new int[1][2];
@@ -122,21 +127,141 @@ public class Heuristic {
         _spacesVisited[0][1] = objKnight.getCurrentY();
 
     }
+    public void emptySpacesVisitedLookAhead() {
+        _spacesVisitedLookAhead = _spacesVisited;
+
+    }
+
 
 
     // Select Move And Compare It to Heuristic Diagram
     public int[][] selectMove(int[][] moves) {
         // Initialize an array to return
-        int[][] choice;
-        // Create a random value between 0 and Array Length
-        Random rand = new Random();
-        int randNum = rand.nextInt(moves.length);
-        // Strip The Array of Choices other than random selection
-        choice = stripElement(moves, randNum);
+        int[][] choice = new int[1][2];
+        // Create a List the Same Length as moves with the value of the move in the same Index as moves
+        int[] valueOfMove = new int[moves.length];
+        System.out.println(Arrays.toString(valueOfMove));
+        System.out.println(Arrays.deepToString(moves));
+        for(int i = 0; i<moves.length; i++)
+        {
+            valueOfMove[i] = heuristic[moves[i][0]][moves[i][1]];
+        }
+
+        // find the Index of the Lowest Value in valueOfMove
+        int min = valueOfMove[0];
+        int minIndex = 0;
+
+        // Iterate through valueOfMove and find the minimum and its index
+        for (int i = 1; i <= valueOfMove.length-1; i++) {
+            if(min == valueOfMove[i]){
+                int holdX = objKnight.getCurrentX();
+                int holdY = objKnight.getCurrentY();
+
+            }
+
+            else if (min > valueOfMove[i]) {
+                min = valueOfMove[i];
+                minIndex = i;
+            }
+
+        }
+
+        System.out.println(minIndex);
+
+        choice[0][0] = moves[minIndex][0];
+        choice[0][1] = moves[minIndex][1];
+        System.out.println(Arrays.deepToString(choice));
+
 
         //return Movement Choice
         return choice;
     }
+    public int[][] selectMoveLookAhead(int[][] moves) {
+        // Initialize an array to return
+        int[][] choice = new int[2][2];
+        // Create a List the Same Length as moves with the value of the move in the same Index as moves
+        int[] valueOfMove = new int[moves.length];
+        System.out.println(Arrays.toString(valueOfMove));
+        System.out.println(Arrays.deepToString(moves));
+        for(int i = 0; i<moves.length; i++)
+        {
+            valueOfMove[i] = heuristic[moves[i][0]][moves[i][1]];
+        }
+
+        // find the Index of the Lowest Value in valueOfMove
+        int min = valueOfMove[0];
+        int minIndex = 0;
+
+        // Iterate through valueOfMove and find the minimum and its index
+        for (int i = 1; i <= valueOfMove.length-1; i++) {
+            if(min == valueOfMove[i]){
+                int holdX = objKnight.getCurrentX();
+                int holdY = objKnight.getCurrentY();
+                minIndex = equalValues( minIndex , i);
+
+            }
+
+            else if (min > valueOfMove[i]) {
+                min = valueOfMove[i];
+                minIndex = i;
+            }
+
+        }
+
+        System.out.println(minIndex);
+
+        choice[0][0] = moves[minIndex][0];
+        choice[0][1] = moves[minIndex][1];
+        choice[1][0] = minIndex;
+        System.out.println(Arrays.deepToString(choice));
+
+
+        //return Movement Choice
+        return choice;
+    }
+
+    public int equalValues( int minIndex, int currentIndex){
+        int minNet = minIndex;
+        // Look Ahead for Value 1, returns Net number
+        int moveValueMinIndex = lookAhead(minIndex);
+
+        // Look Ahead for Value 2
+        int moveValueCurrentIndex = lookAhead(currentIndex);
+
+        // Choose smallest net Number
+
+        if(moveValueCurrentIndex < moveValueMinIndex)
+        {
+            minNet = moveValueCurrentIndex;
+        }
+        return minNet;
+    }
+
+    public int lookAhead(int currentPosition){
+
+
+        int positionValue = 0;
+        for(int i = 0; i<2;i++) {
+            emptySpacesVisitedLookAhead();
+            // Get Moves Available to the Knight , Store in a 2D Array with coordinates (x , y)
+            int[][] movesToChoseFrom = objKnight.knightMoves(objKnight.getCurrentX(), objKnight.getCurrentY());
+            // Make sure moves are Valid, then Return A List with All Valid Positions
+            movesToChoseFrom = movesAreValid(movesToChoseFrom);
+
+            // Add Old Position to _spaceVisited
+            setSpacesVisitedLookAhead(objKnight.getCurrentX(), objKnight.getCurrentY());
+
+            // Select A Move from Array of Valid moves and Update Current Position
+            int[][] choice = selectMoveLookAhead(movesToChoseFrom);
+            objKnight.setCurrentX(choice[0][0]);
+            objKnight.setCurrentY(choice[0][1]);
+
+            positionValue += choice[1][0];
+        }
+        return positionValue;
+
+    }
+
 
     public int[][] movesAreValid(int[][] moves) {
         // Create a value to return
@@ -160,10 +285,8 @@ public class Heuristic {
             for (int i = 0; i < newArray.length; i++) {
                 for (int[] ints : _spacesVisited) {
                     if ((newArray[i][0] == ints[0]) && (newArray[i][1] == ints[1])) {
-                        //System.out.println("visited "+newArray[i][0] + " " + newArray[i][1]);
 
                         newArray = removeElement(newArray, i);
-                        //System.out.println("visited compare" + Arrays.deepToString(newArray));
                         break;
                     }
                 }
@@ -213,25 +336,6 @@ public class Heuristic {
         newArray[lastIndex][0] = value1;
         newArray[lastIndex][1] = value2;
 
-        return newArray;
-    }
-
-
-    public int[][] stripElement(int[][] originalArray, int indexKept) {
-        // Create a new array 1 Long and 2 deep
-        int[][] newArray = new int[1][2];
-
-        // Iterate through the array
-        for (int i = 0, k = 0; i < originalArray.length; i++) {
-            // If i doesn't equal the desired index skip the next section of the loop
-            if (i != indexKept) {
-                continue;
-            }
-            // Else add the value to the next index in the new Array
-            newArray[k][0] = originalArray[i][0];
-            newArray[k][1] = originalArray[i][1];
-            k++;
-        }
         return newArray;
     }
 
